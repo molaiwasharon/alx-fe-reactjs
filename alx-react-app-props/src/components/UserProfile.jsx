@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import UserContext from './UserContext';
 
-const UserDetails = () => {
-  const user = UserContext(UserContext);
+const UserProfile = () => {
+  const user = useContext(UserContext);
 
   return (
     <div>
@@ -11,5 +11,4 @@ const UserDetails = () => {
     </div>
   );
 };
-  
-  export default UserDetails;
+  export default UserProfile;

@@ -6,7 +6,6 @@ import ProfilePage from './ProfilePage'
 import UserContext from './UserContext'
 import React from 'react'
 
-
 function App() {
   const [count, setCount] = useState(0)
 
@@ -43,6 +42,4 @@ function App() {
   <ProfilePage userData={userData} />
   </UserContext.Provider>);
 };
-
-
 export default App
