@@ -1,19 +1,43 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link component
 import { useRecipeStore } from './recipeStore';
+import react-router-dom from 'react'
 
 const RecipeList = () => {
-  const filteredRecipes = useRecipeStore(state => state.filteredRecipes);
+  const recipes = useRecipeStore(state => state.recipes);
 
   return (
     <div>
-      {filteredRecipes.map(recipe => (
+      {recipes.map(recipe => (
         <div key={recipe.id}>
           <h3>{recipe.title}</h3>
           <p>{recipe.description}</p>
-          <Link to={`/recipe/${recipe.id}`}>View Details</Link> {/* Link to RecipeDetails */}
         </div>
       ))}
+    </div>
+  );
+};
+const RecipeList = () => {
+  const filteredRecipes = useRecipeStore((state) => state.filteredRecipes);
+  const setSearchTerm = useRecipeStore((state) => state.setSearchTerm);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+  Link to </recipeStore>
+  return (
+    <div>
+      <input 
+        type="text" 
+        placeholder="Search recipes..." 
+        onChange={handleSearchChange} 
+      />
+      <ul>
+        {filteredRecipes.map((recipe) => (
+          <li key={recipe.id}>
+            <h3>{recipe.name}</h3>
+            <p>{recipe.ingredients}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
