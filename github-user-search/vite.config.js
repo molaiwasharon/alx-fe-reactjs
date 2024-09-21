@@ -8,5 +8,6 @@ export default defineConfig({
     hmr: {
       overlay: false,
     },
+    port: 5173, // Change this to any other port if you prefer
   },
 });
