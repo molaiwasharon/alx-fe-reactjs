@@ -1,50 +1,54 @@
-import React, { useState } from 'react';
-import { fetchUserData } from '../services/githubService'; // Adjust the path as necessary
+import React, { useState } from "react";
+import fetchUserData from "../services/githubService";
 
 const Search = () => {
-  const [username, setUsername] = useState('');
-  const [location, setLocation] = useState(''); // State for location
-  const [users, setUsers] = useState([]);
+  const [username, setUsername] = useState("");
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSearch = async () => {
+  const handleSearch = async (e) => {
+    e.preventDefault();
     setLoading(true);
-    const data = await fetchUserData(username, location); // Pass location to fetch function
-    setUsers(data);
-    setLoading(false);
+    setError(null);
+    setUserData(null);
+
+    try {
+      const data = await fetchUserData(username);
+      setUserData(data);
+    } catch (err) {
+      setError("Looks like we can't find the user");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div>
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Enter GitHub username"
-      />
-      <input
-        type="text"
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
-        placeholder="Enter location" // Location input
-      />
-      <button onClick={handleSearch}>Search</button>
+      <form onSubmit={handleSearch}>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Enter GitHub username"
+        />
+        <button type="submit">Search</button>
+      </form>
 
       {loading && <p>Loading...</p>}
-      
-      {users.length > 0 ? (
-        users.map(user => (
-          <div key={user.login} className="border p-4 my-2">
-            <img src={user.avatar_url} alt={user.login} className="w-12 h-12" />
-            <h2 className="text-xl">{user.login}</h2>
-            <p>Location: {user.location || 'N/A'}</p> {/* Display location */}
-            <a href={user.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-500">
-              View Profile
-            </a>
-          </div>
-        ))
-      ) : (
-        !loading && <p>Looks like we can't find the user.</p>
+      {error && <p>{error}</p>}
+      {userData && (
+        <div>
+          <img
+            src={userData.avatar_url}
+            alt={`${userData.login}'s avatar`}
+            width="100"
+          />
+          <h2>{userData.name || userData.login}</h2>
+          <a href={userData.html_url} target="_blank" rel="noreferrer">
+            View Profile
+          </a>
+        </div>
       )}
     </div>
   );
